@@ -28,6 +28,8 @@ public struct CompletedChallenge: Codable, Equatable, Sendable {
     public var id: String
     public var name: String
     public var bonus: Int
+
+    public init(id: String, name: String, bonus: Int) { self.id = id; self.name = name; self.bonus = bonus }
 }
 
 private let dailyMin = 2

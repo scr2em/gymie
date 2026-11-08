@@ -4,6 +4,26 @@ A native macOS menu bar app that reminds you to move. When a break is due, it op
 
 Built in SwiftUI on top of [Squat Overflow](https://github.com/malik-hesham/Squat-Overflow) (MIT). Its scheduling and game logic is ported to Swift, and its pose server runs locally from `PoseServer/`.
 
+## Screenshots
+
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/break-dark.png"><img src="docs/screenshots/break-light.png" alt="Break window: blurred camera preview with the pose skeleton, live rep count, form score and coaching cue" width="820"></picture>
+</p>
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/dashboard-dark.png"><img src="docs/screenshots/dashboard-light.png" alt="Menu bar dashboard: level, next break, today's stats, challenges, 16-week heatmap and badges" width="300"></picture>
+  &nbsp;
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/leaderboard-dark.png"><img src="docs/screenshots/leaderboard-light.png" alt="Leaderboard tab: this week's XP for everyone in the stats repo" width="300"></picture>
+</p>
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/summary-dark.png"><img src="docs/screenshots/summary-light.png" alt="Break summary: XP breakdown, level-up with confetti and a new badge" width="820"></picture>
+</p>
+<p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/settings-autopause-dark.png"><img src="docs/screenshots/settings-autopause-light.png" alt="Auto-pause settings: camera or microphone in use, fullscreen apps, Calendar events" width="400"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/settings-sync-dark.png"><img src="docs/screenshots/settings-sync-light.png" alt="Stats settings: connected to a private GitHub repo through the GitHub CLI" width="400"></picture>
+</p>
+
+<sub>Rendered from the real views with demo data by <code>make screenshots</code> (no camera, no real accounts).</sub>
+
 ## Requirements
 
 - macOS 14 or later, Xcode 16 or later (Swift 6 toolchain)

@@ -4,16 +4,21 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(AppModel.self) private var model
+    @State private var tab: Int
+
+    init(tab: Int = 0) {
+        _tab = State(initialValue: tab)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             if !model.state.settings.setupDone { welcome }
-            TabView {
-                ScheduleTab().tabItem { Label("Schedule", systemImage: "clock") }
-                AutoPauseTab().tabItem { Label("Auto-pause", systemImage: "hand.raised") }
-                BreakTab().tabItem { Label("Break", systemImage: "camera") }
-                SyncTab().tabItem { Label("Stats & leaderboard", systemImage: "chart.bar") }
-                SystemTab().tabItem { Label("System", systemImage: "gearshape") }
+            TabView(selection: $tab) {
+                ScheduleTab().tabItem { Label("Schedule", systemImage: "clock") }.tag(0)
+                AutoPauseTab().tabItem { Label("Auto-pause", systemImage: "hand.raised") }.tag(1)
+                BreakTab().tabItem { Label("Break", systemImage: "camera") }.tag(2)
+                SyncTab().tabItem { Label("Stats & leaderboard", systemImage: "chart.bar") }.tag(3)
+                SystemTab().tabItem { Label("System", systemImage: "gearshape") }.tag(4)
             }
             .padding(12)
         }
@@ -86,16 +91,28 @@ private struct ScheduleTab: View {
                     TimeField(title: "To", value: setting(model, \.activeEnd))
                 }
                 HStack(spacing: 6) {
-                    ForEach([1, 2, 3, 4, 5, 6, 0], id: \.self) { day in
+                    Text("Workdays")
+                    Spacer()
+                    ForEach([0, 1, 2, 3, 4, 5, 6], id: \.self) { day in
                         let on = model.state.settings.workdays.contains(day)
-                        Button(weekdayNames[day]) {
+                        Button {
                             model.updateSettings { s in
                                 s.workdays = on ? s.workdays.filter { $0 != day } : (s.workdays + [day]).sorted()
                             }
+                        } label: {
+                            Text(weekdayNames[day])
+                                .font(.callout.weight(on ? .semibold : .regular))
+                                .frame(width: 34, height: 24)
+                                .foregroundStyle(on ? Color.white : Color.secondary)
+                                .background(on ? Color.mint : Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 6))
                         }
-                        .buttonStyle(.bordered)
-                        .tint(on ? .mint : .gray)
+                        .buttonStyle(.plain)
+                        .accessibilityAddTraits(on ? .isSelected : [])
+                        .help(on ? "\(weekdayNames[day]) is a workday" : "\(weekdayNames[day]) is off")
                     }
+                }
+                if model.state.settings.workdays.isEmpty {
+                    Text("Pick at least one workday, or reminders never fire.").font(.caption).foregroundStyle(.orange)
                 }
             }
         }

@@ -1,4 +1,4 @@
-.PHONY: app run test install clean icon pose-server
+.PHONY: app run test install clean icon pose-server screenshots
 
 app:            ## Build build/Gymie.app
 	./scripts/build-app.sh
@@ -19,6 +19,9 @@ install: app    ## Copy to ~/Applications (launch at login works best from there
 
 pose-server:    ## One-time setup of the local pose engine (Python 3.10-3.12 + MediaPipe)
 	./scripts/setup-pose-server.sh
+
+screenshots: app ## Render docs/screenshots/*.png from the real views with demo data
+	build/Gymie.app/Contents/MacOS/Gymie --snapshots "$(CURDIR)/docs/screenshots"
 
 icon:           ## Regenerate Support/AppIcon.icns
 	swift scripts/make-icon.swift Support

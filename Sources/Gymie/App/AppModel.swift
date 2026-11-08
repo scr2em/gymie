@@ -6,7 +6,7 @@ import Observation
 /// wall-clock tick (so it survives sleep), and routes actions from the views.
 @MainActor @Observable
 final class AppModel {
-    static let shared = AppModel()
+    static let shared = SnapshotMode.isActive ? AppModel(demo: SnapshotMode.demoState()) : AppModel()
 
     var state: AppState {
         didSet { if state != oldValue { persistence.save(state) } }
@@ -18,7 +18,9 @@ final class AppModel {
     var holdReason: String?
     var nextMeeting: CalendarBusy.Event?
 
-    let persistence = Persistence()
+    let persistence: Persistence
+    /// Snapshot mode: in-memory demo data, no network, no camera.
+    let isDemo: Bool
     let presence = Presence()
     let calendar = CalendarBusy()
     let notifier = Notifier()
@@ -33,8 +35,11 @@ final class AppModel {
     private var lastMinuteWork = Date.distantPast
     private(set) var breakSession: BreakSession?
 
-    private init() {
-        state = persistence.load()
+    private init(demo: AppState? = nil) {
+        isDemo = demo != nil
+        persistence = demo == nil ? Persistence()
+            : Persistence(dir: FileManager.default.temporaryDirectory.appendingPathComponent("gymie-snapshots-\(ProcessInfo.processInfo.processIdentifier)"))
+        state = demo ?? persistence.load()
         sync = StatsSync()
         poseServer = LocalPoseServer(supportDir: persistence.dir)
         catalog = persistence.loadCatalog() ?? Catalog.bundled

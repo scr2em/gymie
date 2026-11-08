@@ -29,7 +29,7 @@ final class BreakSession {
 
     static let positionTimeout: Duration = .seconds(15)
 
-    init(model: AppModel, moves: [Move], manual: Bool, warning: Bool) {
+    init(model: AppModel, moves: [Move], manual: Bool, warning: Bool, autoStart: Bool = true) {
         self.model = model
         self.moves = moves
         self.manual = manual
@@ -38,7 +38,7 @@ final class BreakSession {
         scores = moves.map { _ in [] }
         phase = warning ? .warning : .routine
         coach.onFrame = { [weak self] frame in self?.onFrame(frame) }
-        if !warning { Task { await begin() } }
+        if !warning && autoStart { Task { await begin() } }
     }
 
     var move: Move? { moves.indices.contains(index) ? moves[index] : nil }

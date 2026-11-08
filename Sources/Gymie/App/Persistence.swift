@@ -3,12 +3,14 @@ import GymieCore
 
 /// JSON files in ~/Library/Application Support/Gymie.
 struct Persistence {
-    let dir: URL = {
+    let dir: URL
+
+    /// `dir` overrides the location (snapshot mode uses a temporary folder).
+    init(dir: URL? = nil) {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("Gymie", isDirectory: true)
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir
-    }()
+        self.dir = dir ?? base.appendingPathComponent("Gymie", isDirectory: true)
+        try? FileManager.default.createDirectory(at: self.dir, withIntermediateDirectories: true)
+    }
 
     private var stateURL: URL { dir.appendingPathComponent("state.json") }
     private var catalogURL: URL { dir.appendingPathComponent("catalog.json") }

@@ -92,6 +92,10 @@ public struct Profile: Codable, Equatable, Sendable {
         public var breaks: Int
         public var run: Int
         public var done: [String]
+
+        public init(day: String, ids: [String], areas: [String], breaks: Int, run: Int, done: [String]) {
+            self.day = day; self.ids = ids; self.areas = areas; self.breaks = breaks; self.run = run; self.done = done
+        }
     }
 
     public struct Weekly: Codable, Equatable, Sendable {
@@ -99,6 +103,10 @@ public struct Profile: Codable, Equatable, Sendable {
         public var area: String
         public var count: Int
         public var done: Bool
+
+        public init(week: String, area: String, count: Int, done: Bool) {
+            self.week = week; self.area = area; self.count = count; self.done = done
+        }
     }
 
     /// Week XP for the current ISO week (0 if the stored week is stale).
@@ -111,12 +119,16 @@ public struct Breakdown: Codable, Equatable, Sendable {
     public var streak = 0
     public var challenges: [CompletedChallenge] = []
     public var total = 0
+
+    public init() {}
 }
 
 public struct LevelUp: Codable, Equatable, Sendable {
     public var from: Int
     public var to: Int
     public var name: String
+
+    public init(from: Int, to: Int, name: String) { self.from = from; self.to = to; self.name = name }
 }
 
 public struct Award: Equatable, Sendable {
@@ -124,6 +136,10 @@ public struct Award: Equatable, Sendable {
     public var breakdown: Breakdown
     public var levelUp: LevelUp?
     public var newBadges: [String]
+
+    public init(profile: Profile, breakdown: Breakdown, levelUp: LevelUp?, newBadges: [String]) {
+        self.profile = profile; self.breakdown = breakdown; self.levelUp = levelUp; self.newBadges = newBadges
+    }
 }
 
 func previousWorkday(_ now: Date, workdays: [Int]) -> String? {

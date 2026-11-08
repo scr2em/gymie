@@ -4,7 +4,16 @@ import SwiftUI
 /// The menu bar panel.
 struct DashboardView: View {
     @Environment(AppModel.self) private var model
-    @State private var tab = Tab.me
+    @State private var tab: Tab
+    /// The menu bar panel keeps a fixed height (MenuBarExtra windows don't resize cleanly when
+    /// content changes), so the tab content scrolls. Snapshots render it unclipped.
+    private let scrolls: Bool
+    static let tabHeight: CGFloat = 380
+
+    init(tab: Tab = .me, scrolls: Bool = true) {
+        _tab = State(initialValue: tab)
+        self.scrolls = scrolls
+    }
     @State private var period = BoardPeriod.week
 
     enum Tab: String, CaseIterable { case me = "Today", board = "Leaderboard" }
@@ -21,9 +30,14 @@ struct DashboardView: View {
                 }
                 .pickerStyle(.segmented)
                 .labelsHidden()
-                switch tab {
-                case .me: meTab
-                case .board: boardTab
+                if scrolls {
+                    ScrollView {
+                        tabContent.padding(.bottom, 4)
+                    }
+                    .scrollIndicators(.automatic)
+                    .frame(height: Self.tabHeight)
+                } else {
+                    tabContent
                 }
             }
             Divider()
@@ -31,6 +45,13 @@ struct DashboardView: View {
         }
         .padding(14)
         .frame(width: 380)
+    }
+
+    @ViewBuilder private var tabContent: some View {
+        switch tab {
+        case .me: meTab
+        case .board: boardTab
+        }
     }
 
     // MARK: Cards
@@ -61,7 +82,7 @@ struct DashboardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .firstTextBaseline) {
                         Text("Next break").foregroundStyle(.secondary)
-                        Text(next.formatted(date: Calendar.current.isDateInToday(next) ? .omitted : .abbreviated, time: .shortened))
+                        Text(next.formatted(date: Clock.dayKey(next) == Clock.dayKey(model.now) ? .omitted : .abbreviated, time: .shortened))
                             .font(.headline)
                         Spacer()
                         Text(left > 0 ? "in \(countdownLong(left))" : "now").monospacedDigit().foregroundStyle(.secondary)

@@ -20,6 +20,10 @@ struct GymieApp: App {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        if SnapshotMode.isActive {
+            MainActor.assumeIsolated { SnapshotMode.run() }
+            return
+        }
         MainActor.assumeIsolated { AppModel.shared.start() }
     }
 

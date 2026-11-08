@@ -142,6 +142,7 @@ final class StatsSync {
     }
 
     func loadAccounts() async {
+        if model?.isDemo == true { return }
         ghAccounts = await GitHubCLI.accounts()
     }
 
@@ -311,6 +312,7 @@ final class StatsSync {
     }
 
     func push(force: Bool) async {
+        if model?.isDemo == true { return }
         guard let model, isConnected, let path, let login = model.state.sync.login, !pushing else { return }
         pushing = true
         defer { pushing = false }
@@ -348,6 +350,7 @@ final class StatsSync {
     // MARK: Leaderboard
 
     func refreshBoard(force: Bool = false) async {
+        if model?.isDemo == true { return }
         guard isConnected else { return }
         if !force, let boardUpdated, Date().timeIntervalSince(boardUpdated) < 120 { return }
         do {
