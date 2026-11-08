@@ -1,0 +1,11 @@
+.build/
+build/
+.swiftpm/
+*.xcodeproj/
+DerivedData/
+.DS_Store
+temp/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

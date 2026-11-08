@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gymie privacy</title>
+  <style>
+    body { font: 16px/1.5 -apple-system, system-ui, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 16px; color: #1d1d1f; background: #fff; }
+    @media (prefers-color-scheme: dark) { body { color: #f5f5f7; background: #1d1d1f; } }
+    h1 { font-size: 28px; }
+    h2 { font-size: 18px; margin-top: 28px; }
+  </style>
+</head>
+<body>
+  <h1>Gymie privacy</h1>
+  <p>This pose engine is part of Gymie, a macOS menu bar app. It runs on your own Mac and listens only on 127.0.0.1.</p>
+
+  <h2>Camera</h2>
+  <ul>
+    <li>During a break or practice, Gymie sends camera frames to this engine on your Mac to count reps and score form.</li>
+    <li>Frames are processed in memory and are never written to disk, logged, or sent anywhere else.</li>
+    <li>The blurred preview only changes what you see on screen; the engine needs the real frame to find your pose.</li>
+  </ul>
+
+  <h2>Stats</h2>
+  <ul>
+    <li>Your settings, XP, streaks and break history are stored in ~/Library/Application Support/Gymie on your Mac.</li>
+    <li>If you connect a GitHub repo, Gymie pushes your stats (display name, XP, level, streak, badges, daily break counts) to players/&lt;your-login&gt;.json in that repo, and reads the other files there to show the leaderboard. Keep that repo private. Anyone with access to it can see those stats.</li>
+    <li>GitHub is the only network service Gymie talks to.</li>
+  </ul>
+</body>
+</html>
